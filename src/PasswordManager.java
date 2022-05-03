@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 // Allow for the user to do the following:
@@ -22,6 +21,16 @@ import java.util.Scanner;
 // Upon exiting, have user select password safe destination
 // Save and encrypt passwords to users selected destination
 public class PasswordManager {
+    // Set the private member variables
+    static Scanner master = new Scanner(System.in); // Initialize scanner object for master password
+    static String masterPassword; // Initialize master password variable
+
+    static Scanner choose = new Scanner(System.in); // Get user input for options
+    static String choice = null;
+
+    static Password p = new Password(); // Instantiate password object
+
+
     public static void welcome(){
         // Display welcome screen
         System.out.println("Welcome to the Password Manager!");
@@ -33,11 +42,6 @@ public class PasswordManager {
     }
 
     public static String createMasterPassword(){
-        // Initialize scanner object for master password
-        Scanner master = new Scanner(System.in);
-
-        // Initialize master password variable
-        String masterPassword;
 
         // Display to user the need for master password
         System.out.println("Please create your master password.");
@@ -57,7 +61,7 @@ public class PasswordManager {
         System.out.println("\nPlease select what you would like to do: ");
 
         // Display available options
-        System.out.println("1. Add a new password\n2. Edit an existing password\n3. Delete an existing password\n4. Exit");
+        System.out.println("1. Add a new password\n2. Edit an existing password\n3. Delete an existing password\n4. View passwords\n5. Exit");
 
         // Display carrot
         carrot();
@@ -69,46 +73,53 @@ public class PasswordManager {
         // Get user to create their master password
         createMasterPassword();
 
-        // Get user input for options
-        Scanner choose = new Scanner(System.in);
-        String choice = null;
-        while (!"4".equals(choice)) {
+
+        while (!"5".equals(choice)) {
             // Display available options
             menu();
             choice = choose.next();
 
-            // Create password array
-            String[] passwords;
-            passwords = new String[0];
+
 
             // If user wants to add a password to the collection,
             if ("1".equals(choice)) {
+                System.out.println("Enter the service name: ");
+                String serviceName = choose.next();
+                p.setType(serviceName);
+
+
                 // Prompt them to enter a password
-                System.out.println("Enter your password: ");
+                System.out.println("\nEnter your password: ");
 
                 // Allow them to type in their password
                 String newPassword = choose.next();
 
-                // Make a copy of original array, then include an additional spot
-                passwords = Arrays.copyOf(passwords, passwords.length + 1);
+                // Get the new password
+                p.newest(newPassword);
 
-                // Set the new password to the new spot of the array
-                passwords[passwords.length - 1] = newPassword;
-
-                // Display their newly entered password
-                System.out.println("\nYour new password is: " + newPassword + "\n");
+                // Reset the choice
                 choice = null;
             }
             if ("2".equals(choice)) {
                 System.out.println("Edit which password: ");
+
+                // Reset the choice
                 choice = null;
             }
             if ("3".equals(choice)) {
                 System.out.println("Delete which password? ");
+
+                // Reset the choice
                 choice = null;
             }
             if ("4".equals(choice)) {
+                // View all of the passwords
+                p.view();
+            }
+            if ("5".equals(choice)) {
                 System.out.println("Goodbye!");
+
+                // End the Program
                 break;
             }
 

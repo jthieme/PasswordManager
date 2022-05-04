@@ -6,16 +6,9 @@ import java.util.Scanner;
 // 3. Delete an existing password
 // 4. Save all passwords in an encrypted folder on their local machine
 // 5. Allow the passwords to be decrypted when the correct Master password is entered
-
-// Ways to make this better:
-// OOP Design
-// Include what account this password belongs to (website, application, etc.)
-// Include the associated email of this password
-// Save all information in a JSON Object Array
+// 6. View all the passwords as long as the master password has been provided
 
 // TODO:
-// Separate into functions
-// Upon first start, have user create a master password
 // Upon every start after first, have user enter in master password
 // Decrypt passwords once the master password has been entered
 // Upon exiting, have user select password safe destination
@@ -29,6 +22,7 @@ public class PasswordManager {
     static String choice = null;
 
     static Password p = new Password(); // Instantiate password object
+    static File f = new File(); // Instantiate file object
 
 
     public static void welcome(){
@@ -51,6 +45,7 @@ public class PasswordManager {
 
         // Set masterPassword to receive user input
         masterPassword = master.next();
+        p.createMaster(masterPassword);
 
         // Return the masterPassword
         return masterPassword;
@@ -70,9 +65,22 @@ public class PasswordManager {
         // Display welcome screen
         welcome();
 
-        // Get user to create their master password
-        createMasterPassword();
+        // If not the first time using the program
+        /*if (f.doesPathExist()) {
+            // Enter your existing password
+            System.out.println("Please enter your master password: ");
+            // Find the master password file
+            // Compare it with what was entered
+            // If it matches, keep going
 
+        }
+        // Otherwise, create your master password and other passwords
+        else {
+            // Get user to create their master password
+            createMasterPassword();
+        }*/
+
+        createMasterPassword();
 
         while (!"5".equals(choice)) {
             // Display available options
@@ -90,6 +98,7 @@ public class PasswordManager {
 
                 // Prompt them to enter a password
                 System.out.println("\nEnter your password: ");
+                carrot();
 
                 // Allow them to type in their password
                 String newPassword = choose.next();
@@ -102,21 +111,37 @@ public class PasswordManager {
             }
             if ("2".equals(choice)) {
                 System.out.println("Edit which password: ");
+                carrot();
 
                 // Reset the choice
                 choice = null;
             }
             if ("3".equals(choice)) {
                 System.out.println("Delete which password? ");
+                carrot();
 
                 // Reset the choice
                 choice = null;
             }
             if ("4".equals(choice)) {
-                // View all of the passwords
+                // View all the passwords
+                System.out.println("Here's a list of your passwords and the service they belong to: ");
                 p.view();
             }
             if ("5".equals(choice)) {
+                // Have user select where they want to save their passwords
+                System.out.println("Please select the folder where you want your files saved to: ");
+                f.selectDestination();
+
+                // Save the file destination
+                f.savePathDestination();
+
+                // Save master password at that location
+                f.saveMasterPassword(masterPassword);
+
+                // Save the passwords at that location
+                f.savePasswordsToFile(p.getArray());
+
                 System.out.println("Goodbye!");
 
                 // End the Program

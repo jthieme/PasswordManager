@@ -5,7 +5,12 @@ public class Password {
     static String[] passwords = new String[0]; // Create empty password array
     static Hashtable<String, String> dict = new Hashtable<String, String>();
     static String type;
+    static String masterPass;
 
+    public static String createMaster(String master){
+        master = masterPass;
+        return masterPass;
+    }
     public static String setType(String key){
         type = key;
         //System.out.println("type is: " + type);
@@ -35,10 +40,15 @@ public class Password {
             // Create a new password array
             create(newest);
         }
+        // Otherwise, add to the array
         else
             create(newest);
 
         return newest;
+    }
+
+    public static String getArray() {
+        return Arrays.toString(passwords);
     }
 
 }

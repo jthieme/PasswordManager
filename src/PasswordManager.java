@@ -22,7 +22,7 @@ public class PasswordManager {
     static String choice = null;
 
     static Password p = new Password(); // Instantiate password object
-    static File f = new File(); // Instantiate file object
+    static PasswordFiles pf = new PasswordFiles(); // Instantiate file object
 
 
     public static void welcome(){
@@ -65,36 +65,34 @@ public class PasswordManager {
         // Display welcome screen
         welcome();
 
+        createMasterPassword();
         // If not the first time using the program
-        /*if (f.doesPathExist()) {
+        //if (pf.doesPathExist()) {
             // Enter your existing password
-            System.out.println("Please enter your master password: ");
+          //  System.out.println("Please enter your master password: ");
             // Find the master password file
             // Compare it with what was entered
             // If it matches, keep going
 
-        }
+       // }
         // Otherwise, create your master password and other passwords
-        else {
+       // else {
             // Get user to create their master password
-            createMasterPassword();
-        }*/
+         //   createMasterPassword();
+        //}
 
-        createMasterPassword();
+
 
         while (!"5".equals(choice)) {
             // Display available options
             menu();
             choice = choose.next();
 
-
-
             // If user wants to add a password to the collection,
             if ("1".equals(choice)) {
                 System.out.println("Enter the service name: ");
                 String serviceName = choose.next();
                 p.setType(serviceName);
-
 
                 // Prompt them to enter a password
                 System.out.println("\nEnter your password: ");
@@ -130,19 +128,22 @@ public class PasswordManager {
             }
             if ("5".equals(choice)) {
                 // Have user select where they want to save their passwords
-                System.out.println("Please select the folder where you want your files saved to: ");
-                f.selectDestination();
+                System.out.println("Please select the folder where you want your files saved to.");
+                pf.selectDestination();
 
                 // Save the file destination
-                f.savePathDestination();
+               // pf.savePathDestination();
 
                 // Save master password at that location
-                f.saveMasterPassword(masterPassword);
+                pf.saveMasterPassword(masterPassword);
 
-                // Save the passwords at that location
-                f.savePasswordsToFile(p.getArray());
+                // Save the passwords at that location, with the provided name
+                pf.savePasswordsToFile(p.getArray());
 
-                System.out.println("Goodbye!");
+                // Tell user where their files have been saved to
+                pf.getFileDestination();
+
+                System.out.println("\nGoodbye!");
 
                 // End the Program
                 break;

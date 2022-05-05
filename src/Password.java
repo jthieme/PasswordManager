@@ -5,6 +5,7 @@ public class Password {
     static String[] passwords = new String[0]; // Create empty password array
     static Hashtable<String, String> dict = new Hashtable<String, String>();
     static String type;
+    static String email;
     static String masterPass;
 
     public static String createMaster(String master){
@@ -16,9 +17,14 @@ public class Password {
         //System.out.println("type is: " + type);
         return type;
     }
+    public static String setEmail(String eMail) {
+        email = eMail;
+        return email;
+    }
     public static String create(String newest){
 
         dict.put("NameOfService", type);
+        dict.put("Email", email);
         dict.put("Password", newest);
 
         // Make a copy of original array, then include an additional spot
@@ -49,6 +55,10 @@ public class Password {
 
     public static String getArray() {
         return Arrays.toString(passwords);
+    }
+
+    public static String getMasterPass() {
+        return masterPass;
     }
 
 }

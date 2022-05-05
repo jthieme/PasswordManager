@@ -56,7 +56,7 @@ public class PasswordManager {
         System.out.println("\nPlease select what you would like to do: ");
 
         // Display available options
-        System.out.println("1. Add a new password\n2. Edit an existing password\n3. Delete an existing password\n4. View passwords\n5. Exit");
+        System.out.println("1. Add a new password\n2. Edit an existing password\n3. Delete an existing password\n4. View passwords\n5. Save & Exit");
 
         // Display carrot
         carrot();
@@ -65,23 +65,27 @@ public class PasswordManager {
         // Display welcome screen
         welcome();
 
-        createMasterPassword();
-        // If not the first time using the program
-        //if (pf.doesPathExist()) {
-            // Enter your existing password
-          //  System.out.println("Please enter your master password: ");
-            // Find the master password file
-            // Compare it with what was entered
-            // If it matches, keep going
+        // If it's the users first time with the program
+        if (p.getMasterPass() == null){ // This is always NULL at startup <- FIX BUG!
+            // Then create their master password
+            createMasterPassword();
 
-       // }
-        // Otherwise, create your master password and other passwords
-       // else {
-            // Get user to create their master password
-         //   createMasterPassword();
-        //}
+            // Select where they want their files saved to
+            System.out.println("Please select where you want to save your files to: ");
+            pf.saveUserFileInfo();
+        }
+        // Otherwise
+        else {
+            // Check to see if the master password matches
+            String checkMaster = pf.readFile(pf.getUserDestination());
 
-
+            // If it matches
+            if (checkMaster == p.getMasterPass()) {
+                // Welcome back
+                System.out.println("Welcome back");
+            }
+            // Otherwise, try again
+        }
 
         while (!"5".equals(choice)) {
             // Display available options
@@ -91,8 +95,14 @@ public class PasswordManager {
             // If user wants to add a password to the collection,
             if ("1".equals(choice)) {
                 System.out.println("Enter the service name: ");
+                carrot();
                 String serviceName = choose.next();
                 p.setType(serviceName);
+
+                System.out.println("Enter email for " + serviceName + ": ");
+                carrot();
+                String email = choose.next();
+                p.setEmail(email);
 
                 // Prompt them to enter a password
                 System.out.println("\nEnter your password: ");
@@ -110,6 +120,7 @@ public class PasswordManager {
             if ("2".equals(choice)) {
                 System.out.println("Edit which password: ");
                 carrot();
+                System.out.println("Do Nothing");
 
                 // Reset the choice
                 choice = null;
@@ -117,6 +128,7 @@ public class PasswordManager {
             if ("3".equals(choice)) {
                 System.out.println("Delete which password? ");
                 carrot();
+                System.out.println("Do Nothing");
 
                 // Reset the choice
                 choice = null;
@@ -128,11 +140,8 @@ public class PasswordManager {
             }
             if ("5".equals(choice)) {
                 // Have user select where they want to save their passwords
-                System.out.println("Please select the folder where you want your files saved to.");
-                pf.selectDestination();
-
-                // Save the file destination
-               // pf.savePathDestination();
+                //System.out.println("Please select the folder where you want your files saved to.");
+                //pf.selectDestination();
 
                 // Save master password at that location
                 pf.saveMasterPassword(masterPassword);

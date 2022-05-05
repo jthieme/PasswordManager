@@ -14,7 +14,6 @@ public class Password {
     }
     public static String setType(String key){
         type = key;
-        //System.out.println("type is: " + type);
         return type;
     }
     public static String setEmail(String eMail) {
@@ -23,6 +22,7 @@ public class Password {
     }
     public static String create(String newest){
 
+        // Add items to the dictionary
         dict.put("NameOfService", type);
         dict.put("Email", email);
         dict.put("Password", newest);

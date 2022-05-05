@@ -17,44 +17,49 @@ public class PasswordFiles {
 
 
     public String selectDestination() {
+        // Open up dialog box to choose where to save files
         file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         file.showSaveDialog(null);
 
-        //System.out.println(file.getSelectedFile());
+        // Convert path location to string
         fileDestination = file.getSelectedFile().toString();
         return fileDestination;
     }
     public String saveMasterPassword(String masterPass) {
+        // Save the master password to the selected destination
         try {
+            // Write file destination to the users file destination, with the master password file, containing the master password
             Files.write(Paths.get(fileDestination+"/"+MASTER_FILE), masterPass.getBytes());
+        // If there's an error
         } catch (IOException e) {
+            // Tell me exactly where to find it
             e.printStackTrace();
         }
         return MASTER_FILE;
     }
     public String savePasswordsToFile(String passwordArray) {
+        // Save the password array to the selected destination
         try {
+            // Write files to the users file destination, with the password file, containing the array
             Files.write(Paths.get(fileDestination+"/"+PASS_FILE), passwordArray.getBytes());
+        // If there's an error
         } catch (IOException e) {
+            // Tell me exactly where to find it
             e.printStackTrace();
         }
         return PASS_FILE;
     }
-    public String getPasswordFileName() {
-        System.out.println("Enter password file name (without file type (.txt, etc.)): ");
-        passFileName.next();
-
-        return passFileName.toString();
-    }
-
     public void getFileDestination() {
         System.out.println("\nYour files have been saved to: " + "\n" + fileDestination);
     }
 
     public String saveUserFileInfo() {
+        // If there is no file destination set
         if (fileDestination == null) {
+            // Have user select one
             selectDestination();
         }
+        // Write the users selected file destination for easy lookup when they log in later
         try {
             Files.write(Paths.get(userFileDestination), fileDestination.getBytes());
         } catch (IOException e) {
@@ -80,6 +85,7 @@ public class PasswordFiles {
                 if (line.contains("\\\\")) {
                     line.replace("\\", File.separator);
                 }
+                // Read the file to be able to compare master password with what user logs in with
                 readFile(line+"/"+MASTER_FILE);
             }
             // Otherwise, create the file

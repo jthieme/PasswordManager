@@ -11,7 +11,6 @@ import java.util.Scanner;
 // TODO:
 // Upon every start after first, have user enter in master password
 // Decrypt passwords once the master password has been entered
-// Upon exiting, have user select password safe destination
 // Save and encrypt passwords to users selected destination
 public class PasswordManager {
     // Set the private member variables
@@ -139,11 +138,7 @@ public class PasswordManager {
                 p.view();
             }
             if ("5".equals(choice)) {
-                // Have user select where they want to save their passwords
-                //System.out.println("Please select the folder where you want your files saved to.");
-                //pf.selectDestination();
-
-                // Save master password at that location
+                // Save master password at user specified location
                 pf.saveMasterPassword(masterPassword);
 
                 // Save the passwords at that location, with the provided name

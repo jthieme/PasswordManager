@@ -22,6 +22,8 @@ public class PasswordManager {
 
     static Password p = new Password(); // Instantiate password object
     static PasswordFiles pf = new PasswordFiles(); // Instantiate file object
+    static String checkMaster;
+    static String enterMaster;
 
 
     public static void welcome(){
@@ -65,26 +67,31 @@ public class PasswordManager {
         welcome();
 
         // If it's the users first time with the program
-        if (p.getMasterPass() == null){ // This is always NULL at startup <- FIX BUG!
+        if (pf.readFile(pf.getUserDestination()) == null){
             // Then create their master password
             createMasterPassword();
 
-            // Select where they want their files saved to
-            System.out.println("Please select where you want to save your files to: ");
-            pf.saveUserFileInfo();
-        }
         // Otherwise
-        else {
+        } else {
             // Check to see if the master password matches
-            String checkMaster = pf.readFile(pf.getUserDestination());
+            String checkUserInfo = pf.readFile(pf.getUserDestination());
+            checkMaster = pf.readFile(checkUserInfo+"/"+pf.MASTER_FILE);
 
+            System.out.println("Please enter your master password: ");
+            carrot();
+            enterMaster = choose.next();
+            masterPassword = enterMaster;
+            p.createMaster(masterPassword);
+
+            // Otherwise, try again
             // If it matches
-            if (checkMaster == p.getMasterPass()) {
+            if (checkMaster.equals(enterMaster)) {
                 // Welcome back
                 System.out.println("Welcome back");
             }
-            // Otherwise, try again
         }
+
+
 
         while (!"5".equals(choice)) {
             // Display available options
@@ -139,13 +146,16 @@ public class PasswordManager {
             }
             if ("5".equals(choice)) {
                 // Save master password at user specified location
+                if (masterPassword.equals(null)) {
+                    pf.saveMasterPassword(masterPassword);
+                }
+                pf.saveUserFileInfo();
                 pf.saveMasterPassword(masterPassword);
-
                 // Save the passwords at that location, with the provided name
                 pf.savePasswordsToFile(p.getArray());
 
                 // Tell user where their files have been saved to
-                pf.getFileDestination();
+                System.out.println("\nYour files have been saved to: \n\t" + pf.getFileDestination());
 
                 System.out.println("\nGoodbye!");
 

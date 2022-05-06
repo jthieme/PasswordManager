@@ -49,8 +49,8 @@ public class PasswordFiles {
         }
         return PASS_FILE;
     }
-    public void getFileDestination() {
-        System.out.println("\nYour files have been saved to: " + "\n" + fileDestination);
+    public String getFileDestination() {
+        return fileDestination;
     }
 
     public String saveUserFileInfo() {
@@ -60,10 +60,12 @@ public class PasswordFiles {
             selectDestination();
         }
         // Write the users selected file destination for easy lookup when they log in later
-        try {
-            Files.write(Paths.get(userFileDestination), fileDestination.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+        else {
+            try {
+                Files.write(Paths.get(userFileDestination), fileDestination.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return userFileDestination;
     }
@@ -78,27 +80,18 @@ public class PasswordFiles {
         // Try to read the file
         try (InputStream in = Files.newInputStream(file);
              BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-
             // If file is there and not empty, then read and save its contents
             while ((line = reader.readLine()) != null) {
-                // Read the user selected location
-                if (line.contains("\\\\")) {
-                    line.replace("\\", File.separator);
-                }
-                // Read the file to be able to compare master password with what user logs in with
-                readFile(line+"/"+MASTER_FILE);
+                // Return the contents
+                return line;
             }
+            return line;
             // Otherwise, create the file
         } catch (IOException x) {
-            // System.err.println(x);
-
             // Save the users file destination
             System.out.println("Please select where you want your files saved to: ");
             saveUserFileInfo();
         }
         return line;
-
     }
-
-
 }
